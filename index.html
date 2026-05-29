@@ -1,0 +1,2110 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>反诈十六型互动测评 | 党建红领・金融护航</title>
+  <style>
+    :root {
+      --bg: #f7f6f2;
+      --surface: #ffffff;
+      --surface-2: #f0f5f3;
+      --ink: #1f2933;
+      --muted: #64727d;
+      --line: #d9dfdc;
+      --red: #b42318;
+      --red-dark: #861d16;
+      --teal: #0f766e;
+      --teal-dark: #115e59;
+      --gold: #b7791f;
+      --green: #256b43;
+      --blue: #345995;
+      --shadow: 0 18px 48px rgba(31, 41, 51, 0.12);
+      --radius: 8px;
+      --max: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 8%, rgba(180, 35, 24, 0.08), transparent 25%),
+        radial-gradient(circle at 90% 14%, rgba(15, 118, 110, 0.1), transparent 22%),
+        var(--bg);
+      font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", Arial, sans-serif;
+      letter-spacing: 0;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+      letter-spacing: 0;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .site {
+      min-height: 100vh;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(31, 41, 51, 0.08);
+      background: rgba(247, 246, 242, 0.9);
+      backdrop-filter: blur(14px);
+    }
+
+    .topbar-inner {
+      width: min(100% - 32px, var(--max));
+      margin: 0 auto;
+      min-height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius);
+      background: var(--red);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      box-shadow: 0 10px 22px rgba(180, 35, 24, 0.22);
+    }
+
+    .brand-mark svg,
+    .icon svg {
+      display: block;
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .brand-title {
+      display: grid;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .brand-title strong {
+      font-size: 16px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .brand-title span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .ghost-btn,
+    .primary-btn,
+    .quiet-btn,
+    .danger-btn {
+      min-height: 42px;
+      border: 1px solid transparent;
+      border-radius: var(--radius);
+      padding: 0 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-weight: 700;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease, border-color 0.16s ease;
+    }
+
+    .primary-btn {
+      background: var(--red);
+      color: #fff;
+      box-shadow: 0 12px 24px rgba(180, 35, 24, 0.2);
+    }
+
+    .primary-btn:hover {
+      background: var(--red-dark);
+      transform: translateY(-1px);
+    }
+
+    .ghost-btn {
+      background: var(--surface);
+      color: var(--ink);
+      border-color: var(--line);
+    }
+
+    .ghost-btn:hover {
+      border-color: rgba(15, 118, 110, 0.5);
+      transform: translateY(-1px);
+    }
+
+    .quiet-btn {
+      background: rgba(15, 118, 110, 0.09);
+      color: var(--teal-dark);
+    }
+
+    .danger-btn {
+      background: rgba(180, 35, 24, 0.08);
+      color: var(--red-dark);
+      border-color: rgba(180, 35, 24, 0.2);
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      display: inline-grid;
+      place-items: center;
+      flex: 0 0 auto;
+    }
+
+    main {
+      width: min(100% - 32px, var(--max));
+      margin: 0 auto;
+      padding: 34px 0 54px;
+    }
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    .landing-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+      gap: 26px;
+      align-items: stretch;
+    }
+
+    .intro-panel,
+    .visual-panel,
+    .quiz-panel,
+    .result-panel,
+    .module,
+    .type-detail,
+    .pledge-panel {
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(31, 41, 51, 0.09);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .intro-panel {
+      padding: clamp(24px, 4vw, 44px);
+      display: grid;
+      align-content: center;
+      gap: 24px;
+      min-height: 590px;
+    }
+
+    .kicker {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      color: var(--red-dark);
+      font-weight: 800;
+    }
+
+    .kicker-line {
+      width: 48px;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--red);
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      margin-bottom: 0;
+      font-size: clamp(34px, 5vw, 64px);
+      line-height: 1.04;
+      letter-spacing: 0;
+      color: #111827;
+    }
+
+    .lead {
+      margin: 0;
+      color: #41515d;
+      font-size: clamp(16px, 1.5vw, 19px);
+      line-height: 1.78;
+      max-width: 820px;
+    }
+
+    .start-row,
+    .result-actions,
+    .quiz-actions,
+    .pledge-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .stat {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 14px 12px;
+      min-height: 86px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 22px;
+      line-height: 1.1;
+      color: var(--teal-dark);
+      margin-bottom: 6px;
+    }
+
+    .stat span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .visual-panel {
+      position: relative;
+      overflow: hidden;
+      min-height: 590px;
+      padding: 28px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 22px;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(240, 245, 243, 0.96));
+    }
+
+    .activity-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      border: 1px solid rgba(15, 118, 110, 0.25);
+      background: rgba(15, 118, 110, 0.08);
+      color: var(--teal-dark);
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .phone-scene {
+      align-self: center;
+      justify-self: center;
+      width: min(100%, 360px);
+      aspect-ratio: 0.72;
+      position: relative;
+      display: grid;
+      place-items: center;
+    }
+
+    .phone {
+      width: 74%;
+      height: 88%;
+      border-radius: 28px;
+      border: 10px solid #222c35;
+      background: #fafafa;
+      box-shadow: 0 28px 54px rgba(31, 41, 51, 0.22);
+      padding: 18px 14px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 12px;
+      transform: rotate(-3deg);
+    }
+
+    .phone-notch {
+      width: 74px;
+      height: 9px;
+      border-radius: 999px;
+      background: #222c35;
+      justify-self: center;
+      margin-bottom: 4px;
+    }
+
+    .phone-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .phone-card {
+      border: 1px solid #e5e7eb;
+      border-radius: var(--radius);
+      padding: 12px;
+      background: #fff;
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .warning-line {
+      height: 10px;
+      border-radius: 999px;
+      background: #e5e7eb;
+    }
+
+    .warning-line.red {
+      width: 84%;
+      background: rgba(180, 35, 24, 0.22);
+    }
+
+    .warning-line.teal {
+      width: 68%;
+      background: rgba(15, 118, 110, 0.2);
+    }
+
+    .warning-line.gold {
+      width: 74%;
+      background: rgba(183, 121, 31, 0.24);
+    }
+
+    .phone-alert {
+      border: 1px solid rgba(180, 35, 24, 0.25);
+      background: rgba(180, 35, 24, 0.08);
+      color: var(--red-dark);
+      border-radius: var(--radius);
+      padding: 12px;
+      font-weight: 800;
+      line-height: 1.4;
+      font-size: 14px;
+    }
+
+    .shield-token {
+      position: absolute;
+      right: 2%;
+      bottom: 13%;
+      width: 118px;
+      height: 118px;
+      background: var(--teal);
+      color: #fff;
+      border-radius: var(--radius);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 20px 35px rgba(15, 118, 110, 0.22);
+      transform: rotate(4deg);
+    }
+
+    .shield-token svg {
+      width: 58px;
+      height: 58px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .scene-note {
+      border-left: 4px solid var(--gold);
+      padding-left: 14px;
+      color: #41515d;
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    .quiz-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .quiz-panel,
+    .result-panel {
+      padding: clamp(20px, 3vw, 32px);
+    }
+
+    .progress-block {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .progress-track {
+      height: 12px;
+      border-radius: 999px;
+      background: #e6ebe8;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--red), var(--teal));
+      border-radius: inherit;
+      transition: width 0.25s ease;
+    }
+
+    .scenario {
+      display: grid;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .category-pill {
+      width: fit-content;
+      color: var(--red-dark);
+      background: rgba(180, 35, 24, 0.08);
+      border: 1px solid rgba(180, 35, 24, 0.2);
+      border-radius: 999px;
+      padding: 7px 11px;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .question-title {
+      font-size: clamp(24px, 3vw, 34px);
+      line-height: 1.22;
+      margin-bottom: 0;
+    }
+
+    .scenario-text {
+      color: #40505b;
+      line-height: 1.8;
+      margin-bottom: 0;
+      font-size: 16px;
+    }
+
+    .answers {
+      display: grid;
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .answer-card {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      border-radius: var(--radius);
+      padding: 16px;
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 14px;
+      text-align: left;
+      align-items: start;
+      min-height: 112px;
+      transition: border-color 0.16s ease, transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+    }
+
+    .answer-card:hover {
+      transform: translateY(-1px);
+      border-color: rgba(15, 118, 110, 0.45);
+      box-shadow: 0 14px 26px rgba(31, 41, 51, 0.08);
+    }
+
+    .answer-card[aria-pressed="true"] {
+      border-color: var(--teal);
+      background: rgba(15, 118, 110, 0.06);
+      box-shadow: 0 14px 28px rgba(15, 118, 110, 0.12);
+    }
+
+    .answer-letter {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius);
+      display: grid;
+      place-items: center;
+      background: #eef4f1;
+      color: var(--teal-dark);
+      font-weight: 900;
+    }
+
+    .answer-main {
+      display: grid;
+      gap: 7px;
+    }
+
+    .answer-main strong {
+      font-size: 17px;
+      line-height: 1.35;
+    }
+
+    .answer-main span {
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .feedback {
+      display: none;
+      border: 1px solid rgba(183, 121, 31, 0.35);
+      background: rgba(183, 121, 31, 0.08);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-top: 12px;
+      line-height: 1.65;
+    }
+
+    .feedback.active {
+      display: block;
+    }
+
+    .feedback strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #7a4a0b;
+    }
+
+    .side-stack {
+      display: grid;
+      gap: 14px;
+    }
+
+    .module {
+      padding: 18px;
+      box-shadow: none;
+    }
+
+    .module h3 {
+      margin-bottom: 10px;
+      font-size: 17px;
+    }
+
+    .axis-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .axis-mini {
+      display: grid;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .axis-mini strong {
+      color: var(--ink);
+      font-size: 14px;
+    }
+
+    .mini-track {
+      height: 8px;
+      background: #e6ebe8;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .mini-fill {
+      height: 100%;
+      width: 50%;
+      background: var(--teal);
+      border-radius: inherit;
+      transition: width 0.2s ease;
+    }
+
+    .rule-list {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      color: #465660;
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .rule-list li {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 8px;
+      align-items: start;
+    }
+
+    .rule-number {
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(180, 35, 24, 0.1);
+      color: var(--red-dark);
+      font-weight: 900;
+      font-size: 12px;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .result-panel {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .result-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 8px;
+      background: linear-gradient(90deg, var(--result-color, var(--red)), var(--teal), var(--gold));
+    }
+
+    .type-head {
+      display: grid;
+      grid-template-columns: 106px 1fr;
+      gap: 18px;
+      align-items: center;
+      margin: 12px 0 22px;
+    }
+
+    .type-code {
+      width: 106px;
+      height: 106px;
+      border-radius: var(--radius);
+      background: var(--result-color, var(--red));
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      font-weight: 900;
+      box-shadow: 0 18px 32px rgba(31, 41, 51, 0.16);
+    }
+
+    .type-copy {
+      min-width: 0;
+    }
+
+    .type-copy .eyebrow {
+      color: var(--muted);
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .type-copy h2 {
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.12;
+      margin-bottom: 10px;
+    }
+
+    .type-copy p {
+      color: #44545f;
+      line-height: 1.65;
+      margin-bottom: 0;
+    }
+
+    .dimension-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin: 22px 0;
+    }
+
+    .dimension-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      background: #fff;
+      display: grid;
+      gap: 9px;
+    }
+
+    .dimension-labels {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      gap: 8px;
+    }
+
+    .dimension-title {
+      font-weight: 900;
+      color: var(--ink);
+    }
+
+    .dimension-track {
+      height: 10px;
+      border-radius: 999px;
+      background: #e7ece9;
+      overflow: hidden;
+    }
+
+    .dimension-fill {
+      height: 100%;
+      background: var(--result-color, var(--teal));
+      border-radius: inherit;
+      width: 50%;
+    }
+
+    .type-sections {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .type-section {
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 16px;
+      min-height: 180px;
+    }
+
+    .type-section h3 {
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .type-section p,
+    .type-section li {
+      color: #4a5a65;
+      line-height: 1.62;
+      font-size: 14px;
+    }
+
+    .type-section ul {
+      padding-left: 18px;
+      margin: 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    .share-box {
+      border: 1px solid rgba(15, 118, 110, 0.24);
+      background: rgba(15, 118, 110, 0.07);
+      border-radius: var(--radius);
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .share-box p {
+      margin-bottom: 0;
+      color: #35454f;
+      line-height: 1.65;
+    }
+
+    .pledge-panel {
+      padding: 20px;
+      box-shadow: none;
+      display: grid;
+      gap: 14px;
+    }
+
+    .pledge-panel h3 {
+      margin-bottom: 0;
+    }
+
+    .pledge-input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 13px 14px;
+      min-height: 48px;
+      color: var(--ink);
+      background: #fff;
+    }
+
+    .pledge-wall {
+      display: grid;
+      gap: 8px;
+      max-height: 300px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .pledge-item {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px;
+      background: #fff;
+      color: #40505b;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .case-bank {
+      margin-top: 28px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .section-head h2 {
+      margin-bottom: 6px;
+      font-size: clamp(24px, 3vw, 34px);
+    }
+
+    .section-head p {
+      margin-bottom: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 680px;
+    }
+
+    .case-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .case-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      min-height: 190px;
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+      align-content: start;
+      text-align: left;
+      color: inherit;
+      transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .case-card:hover,
+    .case-card[aria-expanded="true"] {
+      transform: translateY(-1px);
+      border-color: rgba(180, 35, 24, 0.42);
+      box-shadow: 0 14px 28px rgba(31, 41, 51, 0.09);
+    }
+
+    .case-card strong {
+      font-size: 16px;
+      line-height: 1.35;
+    }
+
+    .case-card span,
+    .case-detail {
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 13px;
+    }
+
+    .case-detail {
+      display: none;
+      color: #40505b;
+    }
+
+    .case-card[aria-expanded="true"] .case-detail {
+      display: block;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      background: rgba(17, 24, 39, 0.52);
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-card {
+      width: min(980px, 100%);
+      max-height: min(760px, 92vh);
+      overflow: auto;
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: 0 30px 80px rgba(17, 24, 39, 0.32);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      padding: 22px;
+    }
+
+    .modal-head {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .modal-head h2 {
+      margin-bottom: 6px;
+    }
+
+    .modal-head p {
+      margin-bottom: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .type-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .type-tile {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      padding: 14px;
+      text-align: left;
+      min-height: 128px;
+      display: grid;
+      gap: 8px;
+      align-content: start;
+      color: inherit;
+    }
+
+    .type-tile:hover {
+      border-color: rgba(15, 118, 110, 0.45);
+      box-shadow: 0 10px 22px rgba(31, 41, 51, 0.08);
+    }
+
+    .type-tile-code {
+      font-weight: 900;
+      color: var(--teal-dark);
+    }
+
+    .type-tile-name {
+      font-weight: 900;
+      font-size: 16px;
+    }
+
+    .type-tile-desc {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%) translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      background: #111827;
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      z-index: 60;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      max-width: min(92vw, 520px);
+      text-align: center;
+      line-height: 1.45;
+    }
+
+    .toast.active {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 980px) {
+      .landing-grid,
+      .quiz-layout,
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .intro-panel,
+      .visual-panel {
+        min-height: auto;
+      }
+
+      .case-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .type-sections,
+      .dimension-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .type-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      body {
+        background: var(--bg);
+      }
+
+      .topbar-inner {
+        width: min(100% - 22px, var(--max));
+        min-height: 62px;
+      }
+
+      .brand-title span,
+      .top-actions .quiet-btn {
+        display: none;
+      }
+
+      main {
+        width: min(100% - 22px, var(--max));
+        padding-top: 18px;
+      }
+
+      h1 {
+        font-size: 38px;
+      }
+
+      .intro-panel,
+      .visual-panel,
+      .quiz-panel,
+      .result-panel,
+      .module,
+      .pledge-panel {
+        padding: 18px;
+      }
+
+      .stats-grid,
+      .case-grid,
+      .type-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .phone-scene {
+        width: min(100%, 300px);
+      }
+
+      .shield-token {
+        width: 96px;
+        height: 96px;
+      }
+
+      .answer-card {
+        grid-template-columns: 1fr;
+        min-height: 0;
+      }
+
+      .type-head {
+        grid-template-columns: 1fr;
+      }
+
+      .type-code {
+        width: 96px;
+        height: 96px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="site">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand" aria-label="党建红领金融护航">
+          <div class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 3 20 7v5c0 5-3.2 8-8 9-4.8-1-8-4-8-9V7l8-4Z"></path>
+              <path d="m8.5 12 2.2 2.2 4.8-5"></path>
+            </svg>
+          </div>
+          <div class="brand-title">
+            <strong>党建红领・金融护航</strong>
+            <span>反诈十六型互动测评</span>
+          </div>
+        </div>
+        <div class="top-actions">
+          <button class="quiet-btn" type="button" id="openTypesTop">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 5h7v7H4z"></path>
+                <path d="M13 5h7v7h-7z"></path>
+                <path d="M4 14h7v5H4z"></path>
+                <path d="M13 14h7v5h-7z"></path>
+              </svg>
+            </span>
+            16型图谱
+          </button>
+          <button class="ghost-btn" type="button" id="restartTop">重新开始</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="screen active" id="landing">
+        <div class="landing-grid">
+          <div class="intro-panel">
+            <div class="kicker">
+              <span class="kicker-line" aria-hidden="true"></span>
+              <span>师生联建反诈宣讲互动页</span>
+            </div>
+            <h1>测出你的反诈人格，把案例讲给更多人听</h1>
+            <p class="lead">
+              围绕刷单返利、虚假理财、冒充客服、校园贷、养老诈骗等高发场景，把反诈宣传做成“案例选择题”。答完 12 题后生成一个 MBTI 风格的反诈十六型人格，并给出适合你的宣讲岗位、提醒话术和行动清单。
+            </p>
+            <div class="start-row">
+              <button class="primary-btn" type="button" id="startQuiz">
+                <span class="icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M5 12h14"></path>
+                    <path d="m13 6 6 6-6 6"></path>
+                  </svg>
+                </span>
+                开始测评
+              </button>
+              <button class="ghost-btn" type="button" id="openTypesLanding">查看16型</button>
+            </div>
+            <div class="stats-grid" aria-label="测评信息">
+              <div class="stat">
+                <strong>12题</strong>
+                <span>每题一个真实宣传场景</span>
+              </div>
+              <div class="stat">
+                <strong>4维</strong>
+                <span>核验、识别、沟通、行动</span>
+              </div>
+              <div class="stat">
+                <strong>16型</strong>
+                <span>生成专属反诈人格卡</span>
+              </div>
+              <div class="stat">
+                <strong>3步</strong>
+                <span>停手、核验、求助</span>
+              </div>
+            </div>
+          </div>
+
+          <aside class="visual-panel" aria-label="反诈场景视觉卡">
+            <div class="activity-tags">
+              <span class="tag">社区专场</span>
+              <span class="tag">校园专场</span>
+              <span class="tag">商圈流动宣传</span>
+              <span class="tag">党员反诈岗</span>
+            </div>
+            <div class="phone-scene" aria-hidden="true">
+              <div class="phone">
+                <div class="phone-notch"></div>
+                <div class="phone-title">
+                  <span>风险提醒</span>
+                  <span>09:41</span>
+                </div>
+                <div class="phone-card">
+                  <div class="phone-alert">陌生链接要求转账或验证码，先停手核验</div>
+                  <div class="warning-line red"></div>
+                  <div class="warning-line teal"></div>
+                  <div class="warning-line gold"></div>
+                  <div class="warning-line"></div>
+                </div>
+                <div class="phone-card">
+                  <div class="warning-line teal"></div>
+                  <div class="warning-line"></div>
+                  <div class="warning-line red"></div>
+                </div>
+              </div>
+              <div class="shield-token">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 3 20 7v5c0 5-3.2 8-8 9-4.8-1-8-4-8-9V7l8-4Z"></path>
+                  <path d="M9 12.2 11.1 14 15 9.8"></path>
+                </svg>
+              </div>
+            </div>
+            <p class="scene-note">
+              页面内容已按申报方案聚焦“一老一小”、新市民、高校师生等易受骗群体，适合作为线下摆摊、宣讲预热、组织生活互动环节使用。
+            </p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="screen" id="quiz" aria-live="polite">
+        <div class="quiz-layout">
+          <article class="quiz-panel">
+            <div class="progress-block">
+              <div class="progress-meta">
+                <span id="questionCounter">第 1 / 12 题</span>
+                <span id="axisName">核验倾向</span>
+              </div>
+              <div class="progress-track" aria-hidden="true">
+                <div class="progress-fill" id="progressFill"></div>
+              </div>
+            </div>
+
+            <div class="scenario">
+              <span class="category-pill" id="questionCategory">案例</span>
+              <h2 class="question-title" id="questionTitle"></h2>
+              <p class="scenario-text" id="questionScenario"></p>
+            </div>
+
+            <div class="answers" id="answerList"></div>
+            <div class="feedback" id="feedbackBox"></div>
+
+            <div class="quiz-actions">
+              <button class="ghost-btn" type="button" id="prevQuestion">上一题</button>
+              <button class="primary-btn" type="button" id="nextQuestion" disabled>下一题</button>
+              <button class="danger-btn" type="button" id="resetQuiz">清空重测</button>
+            </div>
+          </article>
+
+          <aside class="side-stack">
+            <section class="module">
+              <h3>当前维度</h3>
+              <div class="axis-list" id="axisProgress"></div>
+            </section>
+            <section class="module">
+              <h3>反诈底线</h3>
+              <ul class="rule-list">
+                <li><span class="rule-number">1</span><span>涉及转账、验证码、屏幕共享，先停手。</span></li>
+                <li><span class="rule-number">2</span><span>只从官方入口、官方电话、线下窗口核验。</span></li>
+                <li><span class="rule-number">3</span><span>发现受骗苗头，留存证据并立即求助。</span></li>
+              </ul>
+            </section>
+          </aside>
+        </div>
+      </section>
+
+      <section class="screen" id="result" aria-live="polite">
+        <div class="result-grid">
+          <article class="result-panel" id="resultCard">
+            <div class="type-head">
+              <div class="type-code" id="resultCode">ISTJ</div>
+              <div class="type-copy">
+                <div class="eyebrow">你的反诈人格</div>
+                <h2 id="resultName">账本守门人</h2>
+                <p id="resultTagline"></p>
+              </div>
+            </div>
+
+            <div class="dimension-grid" id="dimensionGrid"></div>
+
+            <div class="type-sections">
+              <section class="type-section">
+                <h3>优势打法</h3>
+                <ul id="strengthList"></ul>
+              </section>
+              <section class="type-section">
+                <h3>容易忽略</h3>
+                <p id="blindSpot"></p>
+              </section>
+              <section class="type-section">
+                <h3>适合岗位</h3>
+                <p id="bestRole"></p>
+              </section>
+            </div>
+
+            <div class="share-box">
+              <strong>分享文案</strong>
+              <p id="shareText"></p>
+              <div class="result-actions">
+                <button class="primary-btn" type="button" id="copyShare">
+                  <span class="icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <rect x="9" y="9" width="10" height="10" rx="2"></rect>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                  </span>
+                  复制文案
+                </button>
+                <button class="ghost-btn" type="button" id="retakeQuiz">重新测一次</button>
+                <button class="ghost-btn" type="button" id="openTypesResult">查看16型</button>
+              </div>
+            </div>
+          </article>
+
+          <aside class="pledge-panel">
+            <h3>今日反诈行动墙</h3>
+            <input class="pledge-input" id="pledgeInput" maxlength="48" placeholder="写下一句今天要提醒谁的话">
+            <div class="pledge-actions">
+              <button class="quiet-btn" type="button" id="addPledge">加入行动墙</button>
+              <button class="ghost-btn" type="button" id="clearPledges">清空</button>
+            </div>
+            <div class="pledge-wall" id="pledgeWall" aria-live="polite"></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="case-bank" id="caseBank">
+        <div class="section-head">
+          <div>
+            <h2>高发诈骗案例速查</h2>
+            <p>每张卡片可展开，适合线下宣讲时让参与者先猜“哪里不对”，再给出止损动作。</p>
+          </div>
+          <button class="ghost-btn" type="button" id="collapseCases">收起案例</button>
+        </div>
+        <div class="case-grid" id="caseGrid"></div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal" id="typeModal" role="dialog" aria-modal="true" aria-labelledby="typeModalTitle">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <h2 id="typeModalTitle">反诈十六型图谱</h2>
+          <p>四个维度组合成 16 种宣讲风格。没有好坏之分，重点是找到适合自己的反诈岗位。</p>
+        </div>
+        <button class="ghost-btn" type="button" id="closeTypes">关闭</button>
+      </div>
+      <div class="type-grid" id="typeGrid"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const axes = [
+      {
+        key: "IE",
+        left: "I",
+        right: "E",
+        name: "核验倾向",
+        leftName: "独立核验",
+        rightName: "协同求证",
+        defaultPole: "I",
+        hints: {
+          I: "先查官方入口、原始主体和证据链。",
+          E: "快速联动老师、民警、家人或社区网格。"
+        }
+      },
+      {
+        key: "SN",
+        left: "S",
+        right: "N",
+        name: "识别方式",
+        leftName: "线索细查",
+        rightName: "模式预判",
+        defaultPole: "S",
+        hints: {
+          S: "关注链接、账号、合同、收款方等具体线索。",
+          N: "先识别套路结构和情绪操控节奏。"
+        }
+      },
+      {
+        key: "TF",
+        left: "T",
+        right: "F",
+        name: "沟通重点",
+        leftName: "规则证据",
+        rightName: "关怀提醒",
+        defaultPole: "T",
+        hints: {
+          T: "用制度、流程、数据和证据说服对方。",
+          F: "先稳定情绪，再把提醒讲得可接受。"
+        }
+      },
+      {
+        key: "JP",
+        left: "J",
+        right: "P",
+        name: "行动风格",
+        leftName: "预案执行",
+        rightName: "灵活应变",
+        defaultPole: "J",
+        hints: {
+          J: "按清单和分工推进，减少临场遗漏。",
+          P: "用互动、追问和演示处理复杂现场。"
+        }
+      }
+    ];
+
+    const questions = [
+      {
+        axis: "IE",
+        category: "校园缴费",
+        title: "班级群里突然出现“资料费转账通知”",
+        scenario: "对方头像像老师，话术很急，还说“今天不交影响登记”。你第一反应更接近哪一种？",
+        options: [
+          { pole: "I", label: "先独立核验", text: "暂停转账，去教务系统、学院官网或老师原号码核实，确认前不扩散链接。" },
+          { pole: "E", label: "先联动求证", text: "在群里提醒大家别转账，同时联系班委、辅导员或学院老师统一核实。" }
+        ],
+        feedback: {
+          I: "你的选择偏向“独立核验”：先找原始入口，有利于快速切断假通知。",
+          E: "你的选择偏向“协同求证”：先提醒群体，有利于避免更多人同步受骗。"
+        },
+        learning: "群收款、陌生二维码、临时换号都要先核验。老师或单位通知也应回到官方渠道确认。"
+      },
+      {
+        axis: "SN",
+        category: "冒充客服",
+        title: "短信称“校园卡退费”，要求点击链接填写银行卡",
+        scenario: "链接页面做得很像官方系统，还倒计时提醒“过期失效”。你会更关注什么？",
+        options: [
+          { pole: "S", label: "拆细节", text: "看域名、备案、发件号码、页面错字和收款主体，逐项找异常。" },
+          { pole: "N", label: "看套路", text: "把它识别为“退费+倒计时+银行卡”的组合套路，直接退出并走官方入口。" }
+        ],
+        feedback: {
+          S: "你的选择偏向“线索细查”：适合做案例拆解，让参与者看见诈骗的破绽。",
+          N: "你的选择偏向“模式预判”：适合快速抓住套路，避免被页面细节带着走。"
+        },
+        learning: "退费、赔付、注销、升级账户等话术，只要引导填银行卡和验证码，就要高度警惕。"
+      },
+      {
+        axis: "TF",
+        category: "养老理财",
+        title: "社区老人想买“保本高收益养老项目”",
+        scenario: "对方展示讲座合影和收益截图，老人说“大家都买了”。你更可能怎么劝？",
+        options: [
+          { pole: "T", label: "用证据说话", text: "核对牌照、合同、资金去向和收益承诺，说明“保本高收益”本身就违背常识。" },
+          { pole: "F", label: "先接住情绪", text: "先理解养老焦虑，再请家人或社区人员一起看材料，用平和方式劝阻。" }
+        ],
+        feedback: {
+          T: "你的选择偏向“规则证据”：适合把金融常识讲清楚，让骗局站不住脚。",
+          F: "你的选择偏向“关怀提醒”：适合对一老一小等群体降低抵触感。"
+        },
+        learning: "养老诈骗常借健康、陪伴、收益包装。劝阻时既要讲规则，也要尊重对方的真实担忧。"
+      },
+      {
+        axis: "JP",
+        category: "退款陷阱",
+        title: "“客服”来电说快递丢失，要你打开屏幕共享",
+        scenario: "对方准确说出姓名和订单，还说按步骤操作才能赔付。你更倾向于哪种处理？",
+        options: [
+          { pole: "J", label: "按预案执行", text: "立即挂断，按“不共享屏幕、不报验证码、不点链接”的清单处理。" },
+          { pole: "P", label: "灵活追问", text: "不透露信息，反问工号、官方入口和赔付流程，用追问确认其不可信。" }
+        ],
+        feedback: {
+          J: "你的选择偏向“预案执行”：关键时刻清单化动作能降低犯错概率。",
+          P: "你的选择偏向“灵活应变”：适合现场演示，让参与者看清诈骗话术无法自洽。"
+        },
+        learning: "屏幕共享会暴露短信、银行卡、支付页面。赔付退款只走平台内官方客服。"
+      },
+      {
+        axis: "IE",
+        category: "刷单返利",
+        title: "室友说“点赞就返现”，已经准备垫付下一单",
+        scenario: "前几单真的返了小钱，群管理员还晒出很多到账截图。你会先做什么？",
+        options: [
+          { pole: "I", label: "先拉停核验", text: "让室友暂停付款，查平台规则、群成员真实性和资金流向。" },
+          { pole: "E", label: "马上找支援", text: "联系辅导员、反诈民警或同学一起劝阻，避免室友情绪上头继续转账。" }
+        ],
+        feedback: {
+          I: "你的选择偏向“独立核验”：把“先返小钱后吞本金”的结构拆开最有效。",
+          E: "你的选择偏向“协同求证”：多人介入能更快打断持续转账。"
+        },
+        learning: "刷单返利的关键不是第一笔能不能返，而是后续垫资会被越套越深。"
+      },
+      {
+        axis: "SN",
+        category: "虚假投资",
+        title: "同学被拉进“内部量化投资群”",
+        scenario: "群里每天发收益截图，老师讲课很专业，还说名额有限。你更容易从哪里识别风险？",
+        options: [
+          { pole: "S", label: "查主体", text: "核验机构资质、收款账户、合同条款、App 下载来源和资金托管信息。" },
+          { pole: "N", label: "识别剧本", text: "判断这是“导师背书+群托烘托+限时名额”的心理操控剧本。" }
+        ],
+        feedback: {
+          S: "你的选择偏向“线索细查”：适合做金融风险核验表。",
+          N: "你的选择偏向“模式预判”：适合把诈骗团伙的流程图讲出来。"
+        },
+        learning: "投资理财先看资质和资金托管。凡是保收益、走私域、催入金，都要停。"
+      },
+      {
+        axis: "TF",
+        category: "冒充公检法",
+        title: "朋友接到电话后很慌，说账户“涉嫌洗钱”",
+        scenario: "对方要求找安静地方配合调查，朋友怕连累家人。你更可能怎么做？",
+        options: [
+          { pole: "T", label: "压住流程", text: "告诉朋友公检法不会电话办案、不会要求转安全账户，陪他拨打官方电话核实。" },
+          { pole: "F", label: "先稳住人", text: "先陪朋友坐下深呼吸，明确“你不是一个人处理”，再一步步终止通话。" }
+        ],
+        feedback: {
+          T: "你的选择偏向“规则证据”：把官方流程讲清楚，能直接击穿恐吓话术。",
+          F: "你的选择偏向“关怀提醒”：先处理恐慌，能让对方重新听得进建议。"
+        },
+        learning: "恐吓、隔离、保密是冒充公检法常见手段。先让当事人脱离对方控制。"
+      },
+      {
+        axis: "JP",
+        category: "线下宣讲",
+        title: "在社区摆摊时，居民只愿意停留一分钟",
+        scenario: "你希望在很短时间内让对方记住关键点。你更像哪种做法？",
+        options: [
+          { pole: "J", label: "发放清单", text: "递上三步提醒卡，按“陌生链接、转账、验证码”快速讲完重点。" },
+          { pole: "P", label: "现场互动", text: "用一个高发案例反问“你会点吗”，让对方先参与再给答案。" }
+        ],
+        feedback: {
+          J: "你的选择偏向“预案执行”：标准化话术能保证每位居民都听到核心信息。",
+          P: "你的选择偏向“灵活应变”：互动式提问能提高停留率和记忆度。"
+        },
+        learning: "线下宣传要把信息压缩到可带走的一句话，也要给参与者一个开口的机会。"
+      },
+      {
+        axis: "IE",
+        category: "游戏充值",
+        title: "有人推荐“低价代充”，要求先扫个人收款码",
+        scenario: "对方说是内部渠道，还承诺充值不到账就退款。你更习惯怎么处理？",
+        options: [
+          { pole: "I", label: "回到平台", text: "只查游戏平台官方规则和正规支付入口，不跟个人账号交易。" },
+          { pole: "E", label: "提醒圈子", text: "把风险发到同学群或家长群，请大家提醒身边未成年人别扫私人码。" }
+        ],
+        feedback: {
+          I: "你的选择偏向“独立核验”：不离开平台交易，是保护账户和资金的关键。",
+          E: "你的选择偏向“协同求证”：游戏充值骗局常瞄准未成年人，群体提醒很重要。"
+        },
+        learning: "低价代充、解防沉迷、账号租售都容易连到账户盗用和二次勒索。"
+      },
+      {
+        axis: "SN",
+        category: "求职招聘",
+        title: "招聘方要求先交“培训费、服装费、保密费”",
+        scenario: "岗位看起来匹配，还承诺实习证明和转正机会。你更会怎么判断？",
+        options: [
+          { pole: "S", label: "逐项核对", text: "核对公司登记、招聘平台认证、合同主体、收费名目和收款账户。" },
+          { pole: "N", label: "抓住模式", text: "判断这是“先收费再拖延”的求职骗局，直接拒绝并提醒同学。" }
+        ],
+        feedback: {
+          S: "你的选择偏向“线索细查”：合同和收款方往往能暴露真假。",
+          N: "你的选择偏向“模式预判”：先收费的招聘，通常已经偏离正规流程。"
+        },
+        learning: "正规招聘不会以入职为条件收取押金、培训费、材料费。"
+      },
+      {
+        axis: "TF",
+        category: "校园贷",
+        title: "同学被“低息快速放款”吸引",
+        scenario: "对方说不看征信、当天到账，但要先交保证金。你更可能如何劝阻？",
+        options: [
+          { pole: "T", label: "算清成本", text: "把利率、服务费、逾期费和保证金列出来，说明风险和法律后果。" },
+          { pole: "F", label: "解决压力", text: "先问清真实资金困难，陪同联系学校资助、家人或正规金融渠道。" }
+        ],
+        feedback: {
+          T: "你的选择偏向“规则证据”：把成本算明白，能减少侥幸心理。",
+          F: "你的选择偏向“关怀提醒”：如果不处理真实压力，对方可能继续找高风险渠道。"
+        },
+        learning: "校园贷劝阻不能只说“别借”，还要帮助找到安全替代方案。"
+      },
+      {
+        axis: "JP",
+        category: "活动组织",
+        title: "你负责一次反诈问答闯关",
+        scenario: "现场有老人、新市民、学生，知识基础不同。你会更偏向哪种设计？",
+        options: [
+          { pole: "J", label: "固定流程", text: "设置签到、案例卡、答题、讲解、领取手册的固定动线。" },
+          { pole: "P", label: "动态分流", text: "根据参与者年龄和关注点切换题目，临场调整讲解深度。" }
+        ],
+        feedback: {
+          J: "你的选择偏向“预案执行”：适合保障组织生活环节稳定落地。",
+          P: "你的选择偏向“灵活应变”：适合面对不同群体时提高参与感。"
+        },
+        learning: "好的反诈活动既要有标准流程，也要能根据对象切换案例和话术。"
+      }
+    ];
+
+    const typeMeta = {
+      ISTJ: { name: "账本守门人", color: "#b42318", tagline: "你习惯把转账、合同、账号都放进证据链，适合守住活动现场的核验关。" },
+      ISTP: { name: "冷静拆招师", color: "#0f766e", tagline: "你擅长临场拆解话术，让看似专业的骗局露出逻辑漏洞。" },
+      ISFJ: { name: "社区护盾官", color: "#256b43", tagline: "你既细心又稳妥，适合面向老人、家长和新市民做耐心提醒。" },
+      ISFP: { name: "温和提醒员", color: "#b7791f", tagline: "你能把严肃风险讲得不刺耳，让对方愿意停下来听完。" },
+      INFJ: { name: "风险预言家", color: "#345995", tagline: "你能提前识别套路走向，也能照顾受害者的情绪压力。" },
+      INFP: { name: "安心陪伴师", color: "#7c3f58", tagline: "你适合陪伴焦虑中的人走出话术控制，把求助变成可执行动作。" },
+      INTJ: { name: "黑名单架构师", color: "#5b3f8c", tagline: "你适合建立风险模型、题库和预警清单，让活动有可复制机制。" },
+      INTP: { name: "线索破解器", color: "#2f5f73", tagline: "你喜欢追问证据和结构，适合做案例复盘与骗局流程图。" },
+      ESTJ: { name: "阵地指挥官", color: "#9f3412", tagline: "你适合安排点位、分工和流程，把反诈宣传组织成稳定战线。" },
+      ESTP: { name: "现场止损员", color: "#0e7490", tagline: "你反应快、敢打断，适合在现场拉停转账和处理突发情况。" },
+      ESFJ: { name: "群防联络员", color: "#15803d", tagline: "你适合发动班级群、社区群和家庭网络，让提醒迅速扩散。" },
+      ESFP: { name: "宣讲气氛官", color: "#b45309", tagline: "你能把案例讲活，适合做问答闯关、情景模拟和短视频出镜。" },
+      ENFJ: { name: "反诈动员官", color: "#c0265e", tagline: "你擅长把人组织起来，也能照顾不同群体的接受方式。" },
+      ENFP: { name: "案例创意官", color: "#047857", tagline: "你适合把诈骗套路改造成互动题、短视频脚本和现场小游戏。" },
+      ENTJ: { name: "金融护航队长", color: "#9333ea", tagline: "你适合把专业知识、组织资源和社区需求整合成长期机制。" },
+      ENTP: { name: "套路辩手", color: "#0369a1", tagline: "你擅长模拟骗子话术并现场反制，让参与者在对抗中记住风险。" }
+    };
+
+    const caseCards = [
+      {
+        title: "刷单返利",
+        clue: "先给小额返现，再诱导垫付大额任务。",
+        detail: "止损动作：停止转账，保存聊天记录、付款记录和群信息，及时向平台、学校或警方求助。"
+      },
+      {
+        title: "冒充客服",
+        clue: "以退款、赔付、注销为由索要验证码或屏幕共享。",
+        detail: "止损动作：挂断电话，从平台 App 内找官方客服，不通过对方提供的链接或号码。"
+      },
+      {
+        title: "虚假理财",
+        clue: "高收益、保本金、导师带单、内部名额。",
+        detail: "止损动作：核验金融牌照和资金托管，拒绝向个人账户或陌生 App 入金。"
+      },
+      {
+        title: "校园贷",
+        clue: "低息快速放款，但先收保证金、服务费或刷流水。",
+        detail: "止损动作：停止提交资料，联系学校资助渠道、正规金融机构或家人共同处理。"
+      },
+      {
+        title: "养老诈骗",
+        clue: "用健康讲座、熟人陪伴、限时优惠包装投资或产品。",
+        detail: "止损动作：不现场交钱，带材料回家，与家人、社区、银行或警方共同核验。"
+      }
+    ];
+
+    const state = {
+      index: 0,
+      answers: Array(questions.length).fill(null),
+      resultCode: null
+    };
+
+    const els = {
+      landing: document.getElementById("landing"),
+      quiz: document.getElementById("quiz"),
+      result: document.getElementById("result"),
+      questionCounter: document.getElementById("questionCounter"),
+      axisName: document.getElementById("axisName"),
+      progressFill: document.getElementById("progressFill"),
+      questionCategory: document.getElementById("questionCategory"),
+      questionTitle: document.getElementById("questionTitle"),
+      questionScenario: document.getElementById("questionScenario"),
+      answerList: document.getElementById("answerList"),
+      feedbackBox: document.getElementById("feedbackBox"),
+      nextQuestion: document.getElementById("nextQuestion"),
+      prevQuestion: document.getElementById("prevQuestion"),
+      axisProgress: document.getElementById("axisProgress"),
+      resultCard: document.getElementById("resultCard"),
+      resultCode: document.getElementById("resultCode"),
+      resultName: document.getElementById("resultName"),
+      resultTagline: document.getElementById("resultTagline"),
+      dimensionGrid: document.getElementById("dimensionGrid"),
+      strengthList: document.getElementById("strengthList"),
+      blindSpot: document.getElementById("blindSpot"),
+      bestRole: document.getElementById("bestRole"),
+      shareText: document.getElementById("shareText"),
+      typeModal: document.getElementById("typeModal"),
+      typeGrid: document.getElementById("typeGrid"),
+      toast: document.getElementById("toast"),
+      caseGrid: document.getElementById("caseGrid"),
+      pledgeInput: document.getElementById("pledgeInput"),
+      pledgeWall: document.getElementById("pledgeWall")
+    };
+
+    function showScreen(name) {
+      [els.landing, els.quiz, els.result].forEach((screen) => screen.classList.remove("active"));
+      els[name].classList.add("active");
+      window.scrollTo({ top: 0, behavior: "auto" });
+    }
+
+    function currentScores() {
+      const scores = { I: 0, E: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+      state.answers.forEach((pole) => {
+        if (pole) scores[pole] += 1;
+      });
+      return scores;
+    }
+
+    function getAxis(axisKey) {
+      return axes.find((axis) => axis.key === axisKey);
+    }
+
+    function renderQuestion() {
+      const question = questions[state.index];
+      const axis = getAxis(question.axis);
+      const saved = state.answers[state.index];
+      const progress = ((state.index + 1) / questions.length) * 100;
+      els.questionCounter.textContent = `第 ${state.index + 1} / ${questions.length} 题`;
+      els.axisName.textContent = axis.name;
+      els.progressFill.style.width = `${progress}%`;
+      els.questionCategory.textContent = question.category;
+      els.questionTitle.textContent = question.title;
+      els.questionScenario.textContent = question.scenario;
+      els.answerList.innerHTML = "";
+
+      question.options.forEach((option, optionIndex) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "answer-card";
+        button.setAttribute("aria-pressed", String(saved === option.pole));
+        button.innerHTML = `
+          <span class="answer-letter">${optionIndex === 0 ? "A" : "B"}</span>
+          <span class="answer-main">
+            <strong>${option.label}</strong>
+            <span>${option.text}</span>
+          </span>
+        `;
+        button.addEventListener("click", () => {
+          state.answers[state.index] = option.pole;
+          renderQuestion();
+          renderFeedback(option.pole);
+        });
+        els.answerList.appendChild(button);
+      });
+
+      if (saved) {
+        renderFeedback(saved);
+      } else {
+        els.feedbackBox.classList.remove("active");
+        els.feedbackBox.innerHTML = "";
+      }
+
+      els.prevQuestion.disabled = state.index === 0;
+      els.nextQuestion.disabled = !saved;
+      els.nextQuestion.textContent = state.index === questions.length - 1 ? "生成结果" : "下一题";
+      renderAxisProgress();
+    }
+
+    function renderFeedback(pole) {
+      const question = questions[state.index];
+      els.feedbackBox.innerHTML = `
+        <strong>${question.feedback[pole]}</strong>
+        <span>${question.learning}</span>
+      `;
+      els.feedbackBox.classList.add("active");
+      els.nextQuestion.disabled = false;
+    }
+
+    function renderAxisProgress() {
+      const scores = currentScores();
+      els.axisProgress.innerHTML = axes.map((axis) => {
+        const left = scores[axis.left];
+        const right = scores[axis.right];
+        const total = Math.max(left + right, 1);
+        const width = Math.round((right / total) * 100);
+        return `
+          <div class="axis-mini">
+            <strong>${axis.name}</strong>
+            <span>${axis.leftName} ${left} · ${axis.rightName} ${right}</span>
+            <div class="mini-track" aria-hidden="true"><div class="mini-fill" style="width:${width}%"></div></div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function computeResult() {
+      const scores = currentScores();
+      return axes.map((axis) => {
+        const left = scores[axis.left];
+        const right = scores[axis.right];
+        if (left === right) return axis.defaultPole;
+        return left > right ? axis.left : axis.right;
+      }).join("");
+    }
+
+    function renderResult() {
+      const code = computeResult();
+      state.resultCode = code;
+      const meta = typeMeta[code];
+      const scores = currentScores();
+      els.resultCard.style.setProperty("--result-color", meta.color);
+      els.resultCode.textContent = code;
+      els.resultName.textContent = meta.name;
+      els.resultTagline.textContent = meta.tagline;
+
+      els.dimensionGrid.innerHTML = axes.map((axis) => {
+        const left = scores[axis.left];
+        const right = scores[axis.right];
+        const chosen = code.includes(axis.left) ? axis.left : axis.right;
+        const total = Math.max(left + right, 1);
+        const chosenScore = scores[chosen];
+        const percent = Math.round((chosenScore / total) * 100);
+        const fillWidth = Math.round((right / total) * 100);
+        const chosenName = chosen === axis.left ? axis.leftName : axis.rightName;
+        return `
+          <div class="dimension-card">
+            <div class="dimension-title">${axis.name}：${chosenName} ${percent}%</div>
+            <div class="dimension-labels">
+              <span>${axis.left} ${axis.leftName}</span>
+              <span>${axis.right} ${axis.rightName}</span>
+            </div>
+            <div class="dimension-track" aria-hidden="true">
+              <div class="dimension-fill" style="width:${fillWidth}%"></div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      const strengths = makeStrengths(code);
+      els.strengthList.innerHTML = strengths.map((item) => `<li>${item}</li>`).join("");
+      els.blindSpot.textContent = makeBlindSpot(code);
+      els.bestRole.textContent = makeRole(code);
+      const share = `我的反诈人格是 ${code} ${meta.name}：${meta.tagline} 我会坚持“先停手、再核验、再求助”，把反诈提醒带给身边人。`;
+      els.shareText.textContent = share;
+      saveLastResult(code);
+      renderPledgeWall();
+      showScreen("result");
+    }
+
+    function makeStrengths(code) {
+      const pairs = {
+        I: "遇到陌生链接、转账、验证码时，会先回到官方入口核验。",
+        E: "能快速发动班级、社区、家庭和民警资源，阻止风险扩散。",
+        S: "擅长从域名、账号、合同、收款方等细节找到破绽。",
+        N: "擅长识别“恐吓隔离、限时催促、先甜后套”等套路结构。",
+        T: "能把金融规则、平台流程和证据链讲清楚。",
+        F: "能照顾当事人的恐惧、焦虑和面子，让提醒更容易被接受。",
+        J: "适合把活动流程、话术清单和点位分工做扎实。",
+        P: "适合临场互动、角色扮演和突发劝阻。"
+      };
+      return code.split("").map((letter) => pairs[letter]);
+    }
+
+    function makeBlindSpot(code) {
+      const notes = [];
+      if (code.includes("I")) notes.push("别只顾自己核验，发现群体风险时要及时提醒周围人。");
+      if (code.includes("E")) notes.push("联动很重要，但扩散前要避免传播诈骗链接和敏感截图。");
+      if (code.includes("S")) notes.push("细节核对很强，但也要警惕骗子用精致页面掩盖整体套路。");
+      if (code.includes("N")) notes.push("套路判断很快，但关键证据仍要留存，方便后续处置。");
+      if (code.includes("T")) notes.push("证据有力，但面对受害者时先别急着纠错。");
+      if (code.includes("F")) notes.push("共情有效，但涉及资金时仍要明确阻断动作。");
+      if (code.includes("J")) notes.push("流程稳定，但现场对象不同，话术要适度调整。");
+      if (code.includes("P")) notes.push("互动灵活，但需要保留一张底线清单，避免遗漏核心提醒。");
+      return notes.slice(0, 2).join("");
+    }
+
+    function makeRole(code) {
+      const roles = [];
+      if (code.includes("E")) roles.push("群防联络");
+      if (code.includes("I")) roles.push("风险核验");
+      if (code.includes("S")) roles.push("案例拆解");
+      if (code.includes("N")) roles.push("套路预警");
+      if (code.includes("T")) roles.push("金融规则讲解");
+      if (code.includes("F")) roles.push("重点人群陪伴劝阻");
+      if (code.includes("J")) roles.push("活动流程执行");
+      if (code.includes("P")) roles.push("情景模拟互动");
+      return `建议担任：${roles.slice(0, 3).join("、")}。在支部活动中可以和互补类型组队，形成“核验、提醒、劝阻、复盘”的闭环。`;
+    }
+
+    function renderTypeGrid() {
+      const order = [
+        "ISTJ", "ISFJ", "INFJ", "INTJ",
+        "ISTP", "ISFP", "INFP", "INTP",
+        "ESTJ", "ESFJ", "ENFJ", "ENTJ",
+        "ESTP", "ESFP", "ENFP", "ENTP"
+      ];
+      els.typeGrid.innerHTML = order.map((code) => {
+        const meta = typeMeta[code];
+        return `
+          <button class="type-tile" type="button" style="border-top:4px solid ${meta.color}" data-code="${code}">
+            <span class="type-tile-code">${code}</span>
+            <span class="type-tile-name">${meta.name}</span>
+            <span class="type-tile-desc">${meta.tagline}</span>
+          </button>
+        `;
+      }).join("");
+    }
+
+    function renderCaseGrid() {
+      els.caseGrid.innerHTML = caseCards.map((card, index) => `
+        <button class="case-card" type="button" aria-expanded="false" data-case="${index}">
+          <strong>${card.title}</strong>
+          <span>${card.clue}</span>
+          <span class="case-detail">${card.detail}</span>
+        </button>
+      `).join("");
+    }
+
+    function saveLastResult(code) {
+      try {
+        localStorage.setItem("antiFraudPersonalityLast", code);
+      } catch (error) {
+        return undefined;
+      }
+      return code;
+    }
+
+    function getPledges() {
+      try {
+        return JSON.parse(localStorage.getItem("antiFraudPledges") || "[]");
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function setPledges(items) {
+      try {
+        localStorage.setItem("antiFraudPledges", JSON.stringify(items.slice(0, 12)));
+      } catch (error) {
+        return undefined;
+      }
+      return items;
+    }
+
+    function renderPledgeWall() {
+      const pledges = getPledges();
+      const fallback = [
+        "提醒家人：陌生链接不点，验证码不说。",
+        "遇到转账请求，先找官方入口核验。",
+        "把今天学到的一个案例讲给室友听。"
+      ];
+      const items = pledges.length ? pledges : fallback;
+      els.pledgeWall.innerHTML = items.map((item) => `<div class="pledge-item">${escapeHtml(item)}</div>`).join("");
+    }
+
+    function escapeHtml(value) {
+      return value.replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "\"": "&quot;",
+        "'": "&#039;"
+      }[char]));
+    }
+
+    function resetQuiz() {
+      state.index = 0;
+      state.answers = Array(questions.length).fill(null);
+      state.resultCode = null;
+      renderQuestion();
+      showScreen("landing");
+    }
+
+    function showToast(message) {
+      els.toast.textContent = message;
+      els.toast.classList.add("active");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => {
+        els.toast.classList.remove("active");
+      }, 2200);
+    }
+
+    function copyShareText() {
+      const text = els.shareText.textContent;
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(() => showToast("已复制分享文案"));
+        return;
+      }
+      const temp = document.createElement("textarea");
+      temp.value = text;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand("copy");
+      temp.remove();
+      showToast("已复制分享文案");
+    }
+
+    document.getElementById("startQuiz").addEventListener("click", () => {
+      state.index = 0;
+      renderQuestion();
+      showScreen("quiz");
+    });
+
+    document.getElementById("prevQuestion").addEventListener("click", () => {
+      if (state.index > 0) {
+        state.index -= 1;
+        renderQuestion();
+      }
+    });
+
+    document.getElementById("nextQuestion").addEventListener("click", () => {
+      if (!state.answers[state.index]) return;
+      if (state.index === questions.length - 1) {
+        renderResult();
+        return;
+      }
+      state.index += 1;
+      renderQuestion();
+    });
+
+    document.getElementById("resetQuiz").addEventListener("click", resetQuiz);
+    document.getElementById("restartTop").addEventListener("click", resetQuiz);
+    document.getElementById("retakeQuiz").addEventListener("click", resetQuiz);
+    document.getElementById("copyShare").addEventListener("click", copyShareText);
+
+    ["openTypesTop", "openTypesLanding", "openTypesResult"].forEach((id) => {
+      document.getElementById(id).addEventListener("click", () => {
+        els.typeModal.classList.add("active");
+      });
+    });
+
+    document.getElementById("closeTypes").addEventListener("click", () => {
+      els.typeModal.classList.remove("active");
+    });
+
+    els.typeModal.addEventListener("click", (event) => {
+      if (event.target === els.typeModal) els.typeModal.classList.remove("active");
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") els.typeModal.classList.remove("active");
+    });
+
+    els.caseGrid.addEventListener("click", (event) => {
+      const card = event.target.closest(".case-card");
+      if (!card) return;
+      const expanded = card.getAttribute("aria-expanded") === "true";
+      card.setAttribute("aria-expanded", String(!expanded));
+    });
+
+    document.getElementById("collapseCases").addEventListener("click", () => {
+      document.querySelectorAll(".case-card").forEach((card) => card.setAttribute("aria-expanded", "false"));
+    });
+
+    document.getElementById("addPledge").addEventListener("click", () => {
+      const value = els.pledgeInput.value.trim();
+      if (!value) {
+        showToast("先写下一句提醒语");
+        return;
+      }
+      const pledges = getPledges();
+      setPledges([value, ...pledges]);
+      els.pledgeInput.value = "";
+      renderPledgeWall();
+      showToast("已加入行动墙");
+    });
+
+    document.getElementById("clearPledges").addEventListener("click", () => {
+      setPledges([]);
+      renderPledgeWall();
+      showToast("行动墙已清空");
+    });
+
+    renderTypeGrid();
+    renderCaseGrid();
+    renderPledgeWall();
+  </script>
+</body>
+</html>
