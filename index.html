@@ -4,6 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>反诈十六型互动测评 | 党建红领・金融护航</title>
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0e2c1734e8ebd93cfc0804f73544429d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
   <style>
     :root {
       --bg: #f7f6f2;
@@ -1698,7 +1707,8 @@
     const state = {
       index: 0,
       answers: Array(questions.length).fill(null),
-      resultCode: null
+      resultCode: null,
+      completionTracked: false
     };
 
     const els = {
@@ -1837,6 +1847,10 @@
     function renderResult() {
       const code = computeResult();
       state.resultCode = code;
+      if (!state.completionTracked) {
+        trackAnalytics("完成测评", code);
+        state.completionTracked = true;
+      }
       const meta = typeMeta[code];
       const scores = currentScores();
       els.resultCard.style.setProperty("--result-color", meta.color);
@@ -2002,6 +2016,11 @@
       showScreen("landing");
     }
 
+    function trackAnalytics(action, label) {
+      window._hmt = window._hmt || [];
+      window._hmt.push(["_trackEvent", "反诈测评", action, label || ""]);
+    }
+
     function showToast(message) {
       els.toast.textContent = message;
       els.toast.classList.add("active");
@@ -2028,6 +2047,8 @@
 
     document.getElementById("startQuiz").addEventListener("click", () => {
       state.index = 0;
+      state.completionTracked = false;
+      trackAnalytics("开始答题", "首页开始测评按钮");
       renderQuestion();
       showScreen("quiz");
     });
